@@ -11,3 +11,5 @@ Clients_Queue *create_clients_queue();
 void client_enqueue(Clients_Queue *queue, Client *element);
 
 Client *client_dequeue(Clients_Queue *queue);
+
+void print_clients_queue(Clients_Queue queue);

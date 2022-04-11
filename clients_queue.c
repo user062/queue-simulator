@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "clients_queue.h"
 
 Clients_Queue *create_clients_queue() {
@@ -37,4 +38,21 @@ Client *client_dequeue(Clients_Queue *queue) {
     queue->size--;
 
     return client;
+}
+
+void print_clients_queue(Clients_Queue queue) {
+    Clients_Queue_element *c = queue.head;
+    printf("Clients: ");
+
+    if(c == NULL){
+        printf("no client\n");
+        return;
+    }
+
+    while(c->next != NULL) {
+        printf("{id:%d, arrival_time:%ld, start_service:%ld} -> ", c->value->id, c->value->t_arrival, c->value->t_start_service);
+        c = c->next;
+    }
+
+    printf("{id:%d, arrival_time:%ld, start_service:%ld}\n", c->value->id, c->value->t_arrival, c->value->t_start_service);
 }
