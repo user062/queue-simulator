@@ -81,15 +81,6 @@ void init() {
     create_event(arrival, t_now);
 }
 
-
-bool detect_overflow() {
-    return
-        events_queue != NULL &&
-        ((Event*)events_queue->data)->type == departure &&
-        events_queue->next != NULL &&
-        ((Event*)events_queue->next->data)->type == start_service; 
-}
-
 int main(int argc, char *argv[])
 {
     init();
