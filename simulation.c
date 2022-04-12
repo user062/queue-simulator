@@ -124,8 +124,6 @@ int main(int argc, char *argv[])
     Client *client;
 
     while (clients_served < number_of_clients) {
-        print_events_queue(events_queue);
-        print_clients_queue(*processes_queue);
         event = get_event();
         t_now = event->time;
 

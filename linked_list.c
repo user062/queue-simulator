@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include "linked_list.h"
 
 list *create_list() {
@@ -36,18 +35,12 @@ void *delete_from_head(list *list) {
     return list_element->data;
 } 
 
-/*
-int compare(void *value1, void *value2) {
-    return ((Event*)value1)->time <= ((Event*)value2)->time;
-}
-*/
-
 void insert_in_order(list *list_, void * data, bool (*compare)(void *value1,void *value2)) {
     element *new_element = malloc(sizeof(element)); 
     new_element->data = data;
     list *copy = list_;
 
-    if (*list_ == NULL || !compare((*copy)->data, data)) { // insertion at the head 
+    if (*list_ == NULL || !compare((*copy)->data, data)) {
         new_element->next = *copy;
         *list_ = new_element;
         return;
@@ -76,43 +69,3 @@ void print_list(list list, void (print)(void *data)) {
     print(list->data);
     printf("\n");
 }
-
-/*
-void print_list(list list) {
-
-    while (list != NULL){
-        printf("%ld -> ", ((Event*)(list->data))->time);
-        list = list->next;
-    }
-
-    printf("\n");
-}
-*/
-
-    /*
-int main(int argc, char *argv[])
-{
-
-    list *l = create_list();
-    Event e1 = {arrival, 5};
-    Event e2 = {arrival, 3};
-    Event e3 = {arrival, 4};
-    Event e4 = {arrival, 0};
-
-    insert_at_head(l, &e1);
-    print_list(*l);
-
-    insert_in_order(l, &e2);
-    print_list(*l);
-    delete_from_head(l);
-    print_list(*l);
-    //delete_from_head(l);
-    insert_in_order(l, &e3);
-    print_list(*l);
-    //delete_from_head(l);
-    insert_at_tail(l, &e4);
-    print_list(*l);
-
-    return 0;
-}
-    */    
