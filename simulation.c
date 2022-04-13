@@ -46,9 +46,9 @@ void process_departure(Client *client) {
 
 void print_statistics() {
     printf("clients served: %ld\n", clients_served);
-    printf("mean response time: %f\n", mean_response_time/clients_served);
-    printf("mean waiting time: %f\n", mean_waiting_time/clients_served);
-    printf("throughput: %f\n", (float)clients_served/t_now);
+    printf("mean response time: %.3f\n", mean_response_time/clients_served);
+    printf("mean waiting time: %.3f\n", mean_waiting_time/clients_served);
+    printf("throughput: %.3f\n", (float)clients_served/t_now);
 }
 
 Event *get_event() {
@@ -64,6 +64,16 @@ void create_event(Event_type type, time_t time) {
 
 void delete_event(Event *event) {
     free(event);
+}
+
+int detect_overflow() {
+
+    if (server == busy && ((Event*)(events_queue->data))->type == start_service) {
+        printf("server overwhelmed\n");
+        return 1;
+    }
+
+    return 0;
 }
 
 void init() {
@@ -114,7 +124,10 @@ int main(int argc, char *argv[])
     Event *event;
     Client *client;
 
-    while (clients_served < number_of_clients) {
+    while (clients_served < number_of_clients && !detect_overflow()) {
+        print_events_queue(events_queue);
+        print_clients_queue(*processes_queue);
+        printf("\n");
         event = get_event();
         t_now = event->time;
 

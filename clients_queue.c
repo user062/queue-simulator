@@ -45,7 +45,7 @@ void print_clients_queue(Clients_Queue queue) {
     printf("Clients: ");
 
     if(c == NULL){
-        printf("no client\n");
+        printf("empty\n");
         return;
     }
 
