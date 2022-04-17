@@ -95,30 +95,42 @@ int main(int argc, char *argv[])
 {
     init();
 
-    if (argc == 2 && strcmp(argv[0], "--help")) {
+    if (argc == 1) {
         printf("Simulator for D/D/1 Queue\n");
-        printf("Usage: simulator --help\n");
-        printf("Usage: print this message\n");
+        printf("Usage: simulator --help   print this message\n");
         printf("Usage: simulator number_of_clients client_arrival_time client_service_time \n");
-        printf("Usage: simulator (without arguments, equivalent to simulator 10000000 6 5 ) \n");
+        printf("Usage: simulator --default (equivalent to simulator 10000000 6 5 ) \n");
         return 0;
     }
 
-    if (argc == 3) {
+    if (argc == 2 && !strcmp(argv[1], "--help")) {
         printf("Simulator for D/D/1 Queue\n");
-        printf("missing arguments\n");
-        printf("Usage: simulator --help\n");
-        printf("Usage: print the help message\n");
+        printf("Usage: simulator --help   print this message\n");
         printf("Usage: simulator number_of_clients client_arrival_time client_service_time \n");
-        printf("Usage: simulator (without arguments, equivalent to simulator 10000000 6 5 ) \n");
+        printf("Usage: simulator --default (equivalent to simulator 10000000 6 5 ) \n");
         return 0;
     }
 
-    else if (argc == 4) {
+    if (argc == 2 && strcmp(argv[1], "--default")) {
+        printf("missing or invalid argument\n");
+        printf("Usage: simulator --help   print this message\n");
+        printf("Usage: simulator number_of_clients client_arrival_time client_service_time \n");
+        printf("Usage: simulator --default (equivalent to simulator 10000000 6 5 ) \n");
+        return 0;
+    }
+
+    if (argc == 3 || argc > 4) {
+        printf("missing or invalid arguments\n");
+        printf("Usage: simulator --help   print this message\n");
+        printf("Usage: simulator number_of_clients client_arrival_time client_service_time \n");
+        printf("Usage: simulator --default (equivalent to simulator 10000000 6 5 ) \n");
+        return 0;
+    }
+
+    if (argc == 4) {
         number_of_clients = strtol(argv[1], NULL, 10);
         arrival_time = strtol(argv[2], NULL, 10);
         service_time = strtol(argv[3], NULL, 10);
-        
     }
 
     Event *event;
