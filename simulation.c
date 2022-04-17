@@ -4,7 +4,7 @@
 #include "simulation.h"
 
 
-Clients_Queue *processes_queue;
+Clients_Queue *clients_queue;
 Events_Queue events_queue;
 Server_state server;
 time_t t_now, service_time, arrival_time;
@@ -12,12 +12,17 @@ time_t t_now, service_time, arrival_time;
 float mean_response_time, mean_waiting_time;
 long clients_served, new_client_id, number_of_clients;
 
-void process_arrival() {
+Client *create_client() {
     Client *client = malloc(sizeof(Client));
     client->id = new_client_id++;
     client->t_arrival = t_now;
     client->service_time = service_time;
-    client_enqueue(processes_queue, client);
+    return client;
+}
+
+void process_arrival() {
+    Client *client = create_client();
+    client_enqueue(clients_queue, client);
 
     if (server == idle)
         create_event(start_service, t_now);
@@ -27,7 +32,7 @@ void process_arrival() {
 
 Client *process_start_service() {
     server = busy;
-    Client *client = client_dequeue(processes_queue);
+    Client *client = client_dequeue(clients_queue);
     client->t_start_service = t_now;
     create_event(departure, t_now + client->service_time);
     return client;
@@ -40,12 +45,12 @@ void process_departure(Client *client) {
     clients_served++;
     free(client);
 
-    if (processes_queue->size > 0)
+    if (clients_queue->size > 0)
         create_event(start_service, t_now);
 }
 
 void print_statistics() {
-    printf("clients served: %ld\n", clients_served);
+    printf("number of clients served: %ld\n", clients_served);
     printf("mean response time: %.3f\n", mean_response_time/clients_served);
     printf("mean waiting time: %.3f\n", mean_waiting_time/clients_served);
     printf("throughput: %.3f\n", (float)clients_served/t_now);
@@ -66,9 +71,10 @@ void delete_event(Event *event) {
     free(event);
 }
 
-int detect_overflow() {
+int detect_server_overload() {
 
     if (server == busy && ((Event*)(events_queue->data))->type == start_service) {
+        // that's a bit of introspection, it does breaking the event encapsulation, but it's the simplest solution
         printf("server overwhelmed\n");
         return 1;
     }
@@ -78,12 +84,12 @@ int detect_overflow() {
 
 void init() {
     server = idle;
-    processes_queue = create_clients_queue();
+    clients_queue = create_clients_queue();
     events_queue = *create_events_queue();
     t_now = 0;
-    service_time = 5;
-    arrival_time = 6;
-    number_of_clients = 10000000;
+    service_time = 5; // chosen arbitrarily
+    arrival_time = 6; // chosen arbitrarily
+    number_of_clients = 10000000; // chosen arbitrarily
     mean_response_time = 0;
     mean_waiting_time = 0;
     clients_served = 0;
@@ -94,6 +100,8 @@ void init() {
 int main(int argc, char *argv[])
 {
     init();
+
+    /* Bells and whistles, uncomment to enable command line arguments
 
     if (argc == 1) {
         printf("Simulator for D/D/1 Queue\n");
@@ -133,13 +141,22 @@ int main(int argc, char *argv[])
         service_time = strtol(argv[3], NULL, 10);
     }
 
+    */
+
     Event *event;
     Client *client;
 
-    while (clients_served < number_of_clients && !detect_overflow()) {
+    while (clients_served < number_of_clients && !detect_server_overload()) {
+    // could also be changed to exit after a certain amount of time regardless of how many clients were served
+
+        /* uncomment to visualise events and clients 
+
         print_events_queue(events_queue);
-        print_clients_queue(*processes_queue);
+        print_clients_queue(*clients_queue);
         printf("\n");
+
+        */
+
         event = get_event();
         t_now = event->time;
 

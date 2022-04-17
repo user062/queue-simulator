@@ -4,7 +4,6 @@
 
 typedef enum Server_state {busy, idle} Server_state;
 
-
 void init();
 
 void create_event(Event_type type, time_t time);
@@ -21,3 +20,6 @@ void process_departure(Client *client);
 
 void print_statistics();
 
+Client *create_client();
+
+int detect_server_overload();
