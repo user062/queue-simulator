@@ -101,7 +101,6 @@ int main(int argc, char *argv[])
 {
     init();
 
-    /* Bells and whistles, uncomment to enable command line arguments
 
     if (argc == 1) {
         printf("Simulator for D/D/1 Queue\n");
@@ -141,21 +140,18 @@ int main(int argc, char *argv[])
         service_time = strtol(argv[3], NULL, 10);
     }
 
-    */
 
     Event *event;
     Client *client;
 
-    while (clients_served < number_of_clients && !detect_server_overload()) {
+    while (clients_served < number_of_clients /*&& !detect_server_overload()*/) {
     // could also be changed to exit after a certain amount of time regardless of how many clients were served
 
-        /* uncomment to visualise events and clients 
 
         print_events_queue(events_queue);
         print_clients_queue(*clients_queue);
         printf("\n");
 
-        */
 
         event = get_event();
         t_now = event->time;

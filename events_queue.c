@@ -10,6 +10,10 @@ void event_enqueue(Events_Queue *queue, Event *element) {
 }
 
 bool compare(void *value1, void *value2) {
+    if (((Event*)value2)->type == start_service)
+        // priority should be given to start_service as it is independent of of arrival
+        return ((Event*)value1)->time < ((Event*)value2)->time;
+
     return ((Event*)value1)->time <= ((Event*)value2)->time;
 }
 
