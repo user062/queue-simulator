@@ -71,17 +71,6 @@ void delete_event(Event *event) {
     free(event);
 }
 
-int detect_server_overload() {
-
-    if (server == busy && ((Event*)(events_queue->data))->type == start_service) {
-        // that's a bit of introspection, it does breaking the event encapsulation, but it's the simplest solution
-        printf("server overwhelmed\n");
-        return 1;
-    }
-
-    return 0;
-}
-
 void init() {
     server = idle;
     clients_queue = create_clients_queue();
@@ -144,7 +133,7 @@ int main(int argc, char *argv[])
     Event *event;
     Client *client;
 
-    while (clients_served < number_of_clients /*&& !detect_server_overload()*/) {
+    while (clients_served < number_of_clients) {
     // could also be changed to exit after a certain amount of time regardless of how many clients were served
 
 

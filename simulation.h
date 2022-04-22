@@ -21,5 +21,3 @@ void process_departure(Client *client);
 void print_statistics();
 
 Client *create_client();
-
-int detect_server_overload();
