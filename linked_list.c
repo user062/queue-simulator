@@ -26,13 +26,15 @@ void insert_at_tail(list *list, void *data) {
     *list = new_element;
 }
 
-void *delete_from_head(list *list) {
-    if (*list == NULL)
+void *delete_from_head(list *list_) {
+    if (*list_ == NULL)
         return NULL;
 
-    element *list_element = *list;
-    *list = (*list)->next;
-    return list_element->data;
+    void *data = (*list_)->data;
+    list old = *list_;
+    *list_ = (*list_)->next;
+    free(old);
+    return data;
 } 
 
 void insert_in_order(list *list_, void * data, bool (*compare)(void *value1,void *value2)) {

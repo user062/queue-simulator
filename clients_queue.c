@@ -25,6 +25,7 @@ Client *client_dequeue(Clients_Queue *queue) {
     Clients_Queue_element *new_tail = queue->head;
 
     if (queue->size == 1) {
+        free(queue->tail);
         queue->head = queue->tail = NULL;
         queue->size = 0;
         return client;
@@ -33,6 +34,7 @@ Client *client_dequeue(Clients_Queue *queue) {
     for (int i = 1; i < queue->size - 1; i++)
         new_tail = new_tail->next;
 
+    free(queue->tail);
     new_tail->next = NULL;
     queue->tail = new_tail;
     queue->size--;

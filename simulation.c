@@ -136,10 +136,11 @@ int main(int argc, char *argv[])
     while (clients_served < number_of_clients) {
     // could also be changed to exit after a certain amount of time regardless of how many clients were served
 
-
+        /*
         print_events_queue(events_queue);
         print_clients_queue(*clients_queue);
         printf("\n");
+        */
 
 
         event = get_event();
