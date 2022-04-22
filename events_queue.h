@@ -3,7 +3,7 @@
 
 typedef enum Event_type {arrival, start_service, departure} Event_type;
 
-typedef struct Event {Event_type type; time_t time;} Event;
+typedef struct Event {Event_type type; float time;} Event;
 
 typedef list Events_Queue;
 

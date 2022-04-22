@@ -23,9 +23,9 @@ Event *event_dequeue(Events_Queue *queue) {
 
 void print_event(void *event) {
     switch(((Event *)event)->type) {
-        case arrival: printf("{arrival, %ld}", (((Event *)event)->time)); break;
-        case start_service: printf("{start_service, %ld}", ((Event *)event)->time); break;
-        case departure: printf("{departure, %ld}", ((Event *)event)->time); break;
+        case arrival: printf("{arrival, %.2f}", (((Event *)event)->time)); break;
+        case start_service: printf("{start_service, %.2f}", ((Event *)event)->time); break;
+        case departure: printf("{departure, %.2f}", ((Event *)event)->time); break;
     }
 }
 

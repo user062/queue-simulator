@@ -50,9 +50,9 @@ void print_clients_queue(Clients_Queue queue) {
     }
 
     while(c->next != NULL) {
-        printf("{id:%d, arrival_time:%ld, start_service:%ld} -> ", c->value->id, c->value->t_arrival, c->value->t_start_service);
+        printf("{id:%d, arrival_time:%.2f, start_service:%.2f} -> ", c->value->id, c->value->t_arrival, c->value->t_start_service);
         c = c->next;
     }
 
-    printf("{id:%d, arrival_time:%ld, start_service:%ld}\n", c->value->id, c->value->t_arrival, c->value->t_start_service);
+    printf("{id:%d, arrival_time:%.2f, start_service:%.2f}\n", c->value->id, c->value->t_arrival, c->value->t_start_service);
 }

@@ -6,7 +6,7 @@ typedef enum Server_state {busy, idle} Server_state;
 
 void init();
 
-void create_event(Event_type type, time_t time);
+void create_event(Event_type type, float time);
 
 void delete_event(Event *event);
 
@@ -21,3 +21,5 @@ void process_departure(Client *client);
 void print_statistics();
 
 Client *create_client();
+
+float arrival_time();
