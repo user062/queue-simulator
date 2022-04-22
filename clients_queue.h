@@ -1,6 +1,6 @@
 #include <time.h>
 
-typedef struct Client {int id; float t_arrival; float t_start_service; int service_time;} Client;
+typedef struct Client {int id; float t_arrival; float t_start_service; float service_time;} Client;
 
 typedef struct Clients_Queue_element_ {Client *value; struct Clients_Queue_element_ *next;} Clients_Queue_element;
 
