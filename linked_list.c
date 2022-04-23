@@ -34,7 +34,6 @@ void *delete_from_head(list *list_) {
     list old = *list_;
     *list_ = (*list_)->next;
     free(old);
-    //old = NULL;
     return data;
 } 
 
