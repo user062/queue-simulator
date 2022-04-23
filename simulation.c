@@ -8,13 +8,12 @@
 Clients_Queue *clients_queue;
 Events_Queue *events_queue;
 Server_state server;
-float t_now;
-float mean_response_time, mean_waiting_time;
+float mean_response_time, mean_waiting_time, arrival_rate, t_now;
 long clients_served, new_client_id, number_of_clients;
-int service_time, arrival_rate;
+int service_time;
 
 float arrival_time() {
-    return 10*-log(1-(rand()/(float)RAND_MAX))/(float)arrival_rate; // follows an exponential distribution
+    return -log(1-(rand()/(float)RAND_MAX))/arrival_rate; // follows an exponential distribution
 }
 
 Client *create_client() {
@@ -83,7 +82,7 @@ void init() {
     t_now = 0;
     srand(time(NULL));
     service_time = 5; // chosen arbitrarily
-    arrival_rate = 6; // chosen arbitrarily
+    arrival_rate = 0.2; // chosen arbitrarily
     number_of_clients = 10000000; // chosen arbitrarily
     mean_response_time = 0;
     mean_waiting_time = 0;
@@ -131,7 +130,7 @@ int main(int argc, char *argv[])
 
     if (argc == 4) {
         number_of_clients = strtol(argv[1], NULL, 10);
-        arrival_rate = strtol(argv[2], NULL, 10);
+        arrival_rate = strtof(argv[2], NULL);
         service_time = strtol(argv[3], NULL, 10);
     }
 
