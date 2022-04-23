@@ -6,7 +6,7 @@
 
 
 Clients_Queue *clients_queue;
-Events_Queue events_queue;
+Events_Queue *events_queue;
 Server_state server;
 float t_now;
 float mean_response_time, mean_waiting_time;
@@ -66,14 +66,14 @@ void print_statistics() {
 }
 
 Event *get_event() {
-    return event_dequeue(&events_queue);
+    return event_dequeue(events_queue);
 }
 
 void create_event(Event_type type, float time) {
     Event *event = malloc(sizeof(Event));
     event->type = type;
     event->time = time;
-    event_enqueue(&events_queue, event);
+    event_enqueue(events_queue, event);
 }
 
 void delete_event(Event *event) {
@@ -83,7 +83,7 @@ void delete_event(Event *event) {
 void init() {
     server = idle;
     clients_queue = create_clients_queue();
-    events_queue = *create_events_queue();
+    events_queue = create_events_queue();
     t_now = 0;
     srand(time(NULL));
     service_rate = 5; // chosen arbitrarily
@@ -146,10 +146,11 @@ int main(int argc, char *argv[])
     while (clients_served < number_of_clients) {
     // could also be changed to exit after a certain amount of time regardless of how many clients were served
 
-
-        print_events_queue(events_queue);
-        print_clients_queue(*clients_queue);
-        printf("\n");
+        /*
+            print_events_queue(*events_queue);
+            print_clients_queue(*clients_queue);
+            printf("\n");
+        */
 
         event = get_event();
         t_now = event->time;
@@ -161,6 +162,9 @@ int main(int argc, char *argv[])
         }
 
         delete_event(event);
+
+
+
     }
 
     print_statistics();
