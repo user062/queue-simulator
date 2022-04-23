@@ -26,25 +26,29 @@ void insert_at_tail(list *list, void *data) {
     *list = new_element;
 }
 
-void *delete_from_head(list *list) {
-    if (*list == NULL)
+void *delete_from_head(list *list_) {
+    if (*list_ == NULL)
         return NULL;
 
-    element *list_element = *list;
-    *list = (*list)->next;
-    return list_element->data;
+    void *data = (*list_)->data;
+    list old = *list_;
+    *list_ = (*list_)->next;
+    free(old);
+    return data;
 } 
 
 void insert_in_order(list *list_, void * data, bool (*compare)(void *value1,void *value2)) {
     element *new_element = malloc(sizeof(element)); 
     new_element->data = data;
-    list *copy = list_;
+    new_element->next = NULL;
 
-    if (*list_ == NULL || !compare((*copy)->data, data)) {
-        new_element->next = *copy;
+    if (*list_ == NULL || !compare((*list_)->data, data)) {
+        new_element->next = *list_;
         *list_ = new_element;
         return;
     }
+
+    list *copy = list_;
 
     copy = &(*list_)->next;
 
