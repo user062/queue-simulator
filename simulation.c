@@ -13,7 +13,7 @@ long clients_served, new_client_id, number_of_clients;
 int service_time;
 
 float arrival_time() {
-    return -log(rand()/(float)(RAND_MAX + 1u))/arrival_rate; // follows an exponential distribution
+    return -log(1-rand()/(float)(RAND_MAX + 1u))/arrival_rate; // follows an exponential distribution
 }
 
 Client *create_client() {
