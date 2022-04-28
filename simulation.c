@@ -13,7 +13,7 @@ long clients_served, new_client_id, number_of_clients;
 int service_time;
 
 float arrival_time() {
-    return -log(1-(rand()/(float)(RAND_MAX + 1u)))/arrival_rate; // follows an exponential distribution
+    return -log(rand()/(float)(RAND_MAX + 1u))/arrival_rate; // follows an exponential distribution
 }
 
 Client *create_client() {
@@ -80,7 +80,18 @@ void init() {
     clients_queue = create_clients_queue();
     events_queue = create_events_queue();
     t_now = 0;
-    srand(time(NULL));
+    int seed = 0;
+    FILE* fi = fopen("/dev/urandom", "r");
+    if (fi != NULL) {
+        if (fread(&seed, sizeof(seed), 1, fi) != 1)
+            seed = 0;
+        fclose(fi);
+    }
+
+    if (!seed) {
+        seed = time(NULL);
+    }
+    srand(seed);
     service_time = 5; // chosen arbitrarily
     arrival_rate = 0.2; // chosen arbitrarily
     number_of_clients = 10000000; // chosen arbitrarily
